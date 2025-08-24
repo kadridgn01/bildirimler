@@ -65,7 +65,13 @@
   }
   .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
   .btn[disabled]{opacity:.7; cursor:default}
-  .thumb{width:46px; height:46px; border-radius:10px; object-fit:cover; border:1px solid var(--border)}
+  .thumb {
+  width:46px;
+  height:46px;
+  border-radius:50%;   /* kare değil, yuvarlak olsun */
+  object-fit:cover;
+  border:1px solid var(--border);
+}
 
   /* ————— ALT YÜZER MENÜ ————— */
   .bottombar{
