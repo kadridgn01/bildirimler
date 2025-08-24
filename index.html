@@ -1,99 +1,209 @@
 <!doctype html>
 <html lang="tr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Bildirimler</title>
 <style>
-:root {
-  --bg:#0f1115; --paper:#12151c; --ink:#e7e9ee; --muted:#9aa3af;
-  --accent:#3b82f6; --border:#1f2330; --soft:#181c25;
-}
-*{box-sizing:border-box; margin:0; padding:0}
-body { background:var(--bg); color:var(--ink); font:15px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  :root{
+    --bg:#0f1115; --paper:#12151c; --ink:#e7e9ee; --muted:#9aa3af;
+    --accent:#3b82f6; --border:#1f2330; --soft:#181c25;
+    --maxw:600px; --topbar-h:64px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif;
 
-.topbar {
-  position:sticky; top:0; z-index:10;
-  background:var(--paper);
-  padding:14px 16px; font-weight:700; font-size:18px;
-  border-bottom:1px solid var(--border);
-}
+    /* üst barın altında başlasın + çentik payları */
+    padding-top:calc(var(--topbar-h) + constant(safe-area-inset-top,0px));
+    padding-top:calc(var(--topbar-h) + env(safe-area-inset-top,0px));
 
-.section {
-  padding:12px 16px; color:var(--muted); font-size:13px; font-weight:600;
-}
+    /* alt yüzer menüyle çakışmasın */
+    padding-bottom:calc(110px + constant(safe-area-inset-bottom,0px));
+    padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));
+  }
 
-.list { list-style:none; }
-.item {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:10px 16px; gap:12px;
-  border-bottom:1px solid var(--border);
-}
-.item .left { display:flex; align-items:center; gap:12px; flex:1; }
-.item img { width:44px; height:44px; border-radius:50%; object-fit:cover; }
-.item .txt { font-size:14px; }
-.item .txt b { font-weight:700; }
-.item .txt small { display:block; color:var(--muted); font-size:12px; margin-top:2px; }
+  /* ————— ÜST BAR (logo ortada, tam siyah bant) ————— */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    height:calc(var(--topbar-h) + constant(safe-area-inset-top,0px));
+    height:calc(var(--topbar-h) + env(safe-area-inset-top,0px));
+    padding-top:constant(safe-area-inset-top,0px);
+    padding-top:env(safe-area-inset-top,0px);
+    background:#0e121b;
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:flex-end;
+  }
+  .row{
+    max-width:var(--maxw); height:var(--topbar-h);
+    margin:0 auto; width:100%;
+    display:flex; align-items:center; justify-content:center; /* ortada */
+    padding:0 16px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:20px; letter-spacing:.2px}
+  .brand img{height:28px; width:auto; display:block}
 
-.btn {
-  border:none; border-radius:8px; padding:6px 12px;
-  font-size:14px; font-weight:600; cursor:pointer;
-}
-.btn.follow { background:var(--accent); color:#fff; }
-.btn.following { background:var(--soft); color:var(--ink); }
+  /* ————— ANA İÇERİK ————— */
+  .wrap{max-width:var(--maxw); margin:0 auto}
+
+  .section{padding:12px 16px; color:var(--muted); font-size:13px; font-weight:700}
+  .list{list-style:none}
+  .item{
+    display:flex; align-items:center; gap:12px; padding:12px 16px;
+    border-bottom:1px solid var(--border);
+  }
+  .left{display:flex; align-items:center; gap:12px; flex:1; min-width:0}
+  .ava{width:46px; height:46px; border-radius:50%; object-fit:cover; border:2px solid var(--soft)}
+  .txt{font-size:14px; overflow:hidden}
+  .txt b{font-weight:800}
+  .txt .time{display:block; color:var(--muted); font-size:12px; margin-top:2px}
+  .cta{display:flex; gap:8px; align-items:center}
+  .btn{
+    border:1px solid var(--border); background:var(--soft); color:var(--ink);
+    padding:8px 12px; border-radius:10px; font-weight:700; cursor:pointer; white-space:nowrap;
+  }
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+  .btn[disabled]{opacity:.7; cursor:default}
+  .thumb{width:46px; height:46px; border-radius:10px; object-fit:cover; border:1px solid var(--border)}
+
+  /* ————— ALT YÜZER MENÜ ————— */
+  .bottombar{
+    position:fixed; z-index:40;
+    bottom:calc(constant(safe-area-inset-bottom,0px) + 8px);
+    bottom:calc(env(safe-area-inset-bottom,0px) + 8px);
+    left:10px; right:10px;
+    height:58px; border-radius:14px;
+    background:var(--paper); border:1px solid var(--border);
+    display:flex; justify-content:space-around; align-items:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  .nav-item{display:flex; flex-direction:column; align-items:center; color:var(--ink); text-decoration:none}
+  .nav-item span{font-size:12px; color:var(--muted); margin-top:2px}
 </style>
 </head>
 <body>
 
-<div class="topbar">Bildirimler</div>
-
-<div class="section">Dün</div>
-<ul class="list">
-  <li class="item">
-    <div class="left">
-      <img src="assets/fatos.jpg" alt="">
-      <div class="txt"><b>Fatoş Dursun</b> seni takip etmeye başladı
-        <small>1g</small>
-      </div>
+<!-- ÜST BAR -->
+<header class="topbar">
+  <div class="row">
+    <div class="brand">
+      <!-- kendi logonu buraya koy -->
+      <img src="assets/logo.png" alt="logo">
+      Bildirimler
     </div>
-    <button class="btn following">Takiptesin</button>
-  </li>
-</ul>
+  </div>
+</header>
 
-<div class="section">Son 7 gün</div>
-<ul class="list">
-  <li class="item">
-    <div class="left">
-      <img src="assets/random1.jpg" alt="">
-      <div class="txt"><b>emirkaya</b> seni takip etmeye başladı
-        <small>3g</small>
-      </div>
-    </div>
-    <button class="btn follow">Takip Et</button>
-  </li>
-  <li class="item">
-    <div class="left">
-      <img src="assets/random2.jpg" alt="">
-      <div class="txt"><b>garaj217</b> seni takip etmeye başladı
-        <small>4g</small>
-      </div>
-    </div>
-    <button class="btn follow">Takip Et</button>
-  </li>
-</ul>
+<!-- İÇERİK -->
+<main class="wrap" id="root"></main>
 
-<div class="section">Son 30 gün</div>
-<ul class="list">
-  <li class="item">
-    <div class="left">
-      <img src="assets/random3.jpg" alt="">
-      <div class="txt"><b>serkan25eksi</b> seni takip etmeye başladı
-        <small>1h</small>
-      </div>
-    </div>
-    <button class="btn following">Takiptesin</button>
-  </li>
-</ul>
+<!-- ALT YÜZER MENÜ -->
+<nav class="bottombar">
+  <a href="#" class="nav-item">🏠<span>Ana Sayfa</span></a>
+  <a href="#" class="nav-item">🔍<span>Arama</span></a>
+  <a href="#" class="nav-item">👤<span>Profil</span></a>
+</nav>
 
+<script>
+/* ——— ÖRNEK VERİ: Fatoş ekleme CTA’lı, diğerleri arkadaşsınız; like/comment de var ——— */
+const DATA = [
+  { section:"Dün", items:[
+    { type:"follow", user:"Fatoş Dursun", handle:"fatosdursun", avatar:"assets/fatos.jpg", time:"1g", youFollow:false }
+  ]},
+  { section:"Son 7 gün", items:[
+    { type:"follow", user:"garaj217", handle:"garaj217", avatar:"assets/p3.jpg", time:"4g", youFollow:true },
+    { type:"like",   user:"eminkah", handle:"eminkah",  avatar:"assets/p4.jpg", time:"3g", postThumb:"assets/p6.jpg" },
+    { type:"comment",user:"ozge",    handle:"ozge",     avatar:"assets/p7.jpg", time:"6g", postThumb:"assets/p8.jpg", text:"Harika kare!" }
+  ]},
+  { section:"Son 30 gün", items:[
+    { type:"follow", user:"serkan25eksi", handle:"serkan25eksi", avatar:"assets/p9.jpg", time:"1h", youFollow:true },
+    { type:"like",   user:"hakan", handle:"hakn", avatar:"assets/p10.jpg", time:"1g", postThumb:"assets/p2.jpg" }
+  ]}
+];
+
+const root = document.getElementById('root');
+
+DATA.forEach(group=>{
+  const sec = document.createElement('div');
+  sec.className = 'section';
+  sec.textContent = group.section;
+  root.appendChild(sec);
+
+  const ul = document.createElement('ul');
+  ul.className = 'list';
+
+  group.items.forEach(item=>{
+    const li = document.createElement('li');
+    li.className = 'item';
+
+    const left = document.createElement('div');
+    left.className = 'left';
+
+    const ava = document.createElement('img');
+    ava.className = 'ava';
+    ava.src = item.avatar || 'assets/p1.jpg';
+    ava.alt = '';
+
+    const txt = document.createElement('div');
+    txt.className = 'txt';
+
+    if(item.type === 'follow'){
+      txt.innerHTML = `<b>${item.user}</b> seni takip etmeye başladı
+                       <span class="time">${item.time}</span>`;
+      const cta = document.createElement('div');
+      cta.className = 'cta';
+
+      const btn = document.createElement('button');
+      if(item.youFollow){
+        btn.className = 'btn';
+        btn.textContent = 'Arkadaşsınız';
+        btn.disabled = true;
+      }else{
+        btn.className = 'btn primary';
+        btn.textContent = 'Arkadaş olarak ekle';
+        btn.onclick = ()=>{
+          btn.classList.remove('primary');
+          btn.textContent = 'Arkadaşsınız';
+          btn.disabled = true;
+        };
+      }
+      left.appendChild(ava);
+      left.appendChild(txt);
+      li.appendChild(left);
+      li.appendChild(cta);
+      cta.appendChild(btn);
+
+    }else if(item.type === 'like'){
+      txt.innerHTML = `<b>${item.user}</b> bir gönderini beğendi
+                       <span class="time">${item.time}</span>`;
+      const thumb = document.createElement('img');
+      thumb.className = 'thumb';
+      thumb.src = item.postThumb || 'assets/p2.jpg';
+
+      left.appendChild(ava);
+      left.appendChild(txt);
+      li.appendChild(left);
+      li.appendChild(thumb);
+
+    }else if(item.type === 'comment'){
+      txt.innerHTML = `<b>${item.user}</b> bir gönderine yorum yaptı
+                       <span class="time">${item.time}</span>`;
+      const thumb = document.createElement('img');
+      thumb.className = 'thumb';
+      thumb.src = item.postThumb || 'assets/p3.jpg';
+
+      left.appendChild(ava);
+      left.appendChild(txt);
+      li.appendChild(left);
+      li.appendChild(thumb);
+    }
+
+    ul.appendChild(li);
+  });
+
+  root.appendChild(ul);
+});
+</script>
 </body>
 </html>
