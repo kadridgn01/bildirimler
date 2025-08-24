@@ -54,7 +54,14 @@
     border-bottom:1px solid var(--border);
   }
   .left{display:flex; align-items:center; gap:12px; flex:1; min-width:0}
-  .ava{width:46px; height:46px; border-radius:50%; object-fit:cover; border:2px solid var(--soft)}
+  .ava{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  object-fit:cover;      /* görseli doldur */
+  aspect-ratio:1/1;      /* daima kare alan */
+  display:block;         /* inline gapleri kapatır */
+}
   .txt{font-size:14px; overflow:hidden}
   .txt b{font-weight:800}
   .txt .time{display:block; color:var(--muted); font-size:12px; margin-top:2px}
